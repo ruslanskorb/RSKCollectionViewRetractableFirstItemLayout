@@ -47,7 +47,7 @@ internal final class SearchCollectionViewCell: UICollectionViewCell {
         self.searchBar.frame = CGRect(origin: CGPoint.zero, size: self.contentView.bounds.size)
     }
     
-    internal override class var requiresConstraintBasedLayout: Bool {
+    internal override class func requiresConstraintBasedLayout() -> Bool {
         
         return false
     }

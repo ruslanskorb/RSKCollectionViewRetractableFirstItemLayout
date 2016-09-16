@@ -20,9 +20,9 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
     
     // MARK: - Private Properties
     
-    @IBOutlet fileprivate weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     
-    fileprivate let colors = [
+    private let colors = [
         "Emma":     UIColor(red: 81     / 255.0,    green: 81      / 255.0,     blue: 79       / 255.0,     alpha: 1.0),
         "Oliver":   UIColor(red: 242    / 255.0,    green: 94      / 255.0,     blue: 92       / 255.0,     alpha: 1.0),
         "Jack":     UIColor(red: 242    / 255.0,    green: 167     / 255.0,     blue: 92       / 255.0,     alpha: 1.0),
@@ -31,11 +31,11 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         "Sophia":   UIColor(red: 112    / 255.0,    green: 193     / 255.0,     blue: 178      / 255.0,     alpha: 1.0)
     ]
     
-    fileprivate var filteredNames: [String]!
+    private var filteredNames: [String]!
     
-    fileprivate let names = ["Emma", "Oliver", "Jack", "Olivia", "Harry", "Sophia"]
+    private let names = ["Emma", "Oliver", "Jack", "Olivia", "Harry", "Sophia"]
     
-    fileprivate var readyForPresentation = false
+    private var readyForPresentation = false
     
     // MARK: - Object Lifecycle
     
@@ -45,8 +45,8 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         
         self.filteredNames = self.names
         
-        self.collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionViewCell.identifier")
-        self.collectionView.register(TextCollectionViewCell.self, forCellWithReuseIdentifier: "TextCollectionViewCell.identifier")
+        self.collectionView.registerClass(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionViewCell.identifier")
+        self.collectionView.registerClass(TextCollectionViewCell.self, forCellWithReuseIdentifier: "TextCollectionViewCell.identifier")
         
         if let collectionViewLayout = self.collectionView.collectionViewLayout as? RSKCollectionViewRetractableFirstItemLayout {
             
@@ -67,27 +67,27 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         
         self.readyForPresentation = true
         
-        let searchItemIndexPath = IndexPath(item: 0, section: 0)
-        self.collectionView.contentOffset = CGPoint(x: 0.0, y: self.collectionView(self.collectionView, layout: self.collectionView.collectionViewLayout, sizeForItemAt: searchItemIndexPath).height)
+        let searchItemIndexPath = NSIndexPath(forItem: 0, inSection: 0)
+        self.collectionView.contentOffset = CGPoint(x: 0.0, y: self.collectionView(self.collectionView, layout: self.collectionView.collectionViewLayout, sizeForItemAtIndexPath: searchItemIndexPath).height)
     }
     
     // MARK: - UICollectionViewDataSource
     
-    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    internal func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         switch indexPath.section {
             
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionViewCell.identifier", for: indexPath) as! SearchCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("SearchCollectionViewCell.identifier", forIndexPath: indexPath) as! SearchCollectionViewCell
             
             cell.searchBar.delegate = self
-            cell.searchBar.searchBarStyle = .minimal
+            cell.searchBar.searchBarStyle = .Minimal
             cell.searchBar.placeholder = "Search - \(self.names.count) names"
             
             return cell
             
         case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextCollectionViewCell.identifier", for: indexPath) as! TextCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("TextCollectionViewCell.identifier", forIndexPath: indexPath) as! TextCollectionViewCell
             
             let name = self.filteredNames[indexPath.item]
             
@@ -95,8 +95,8 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
             cell.colorView.layer.masksToBounds = true
             cell.colorView.backgroundColor = self.colors[name]
             
-            cell.label.textColor = UIColor.white
-            cell.label.textAlignment = .center
+            cell.label.textColor = UIColor.whiteColor()
+            cell.label.textAlignment = .Center
             cell.label.text = name
             
             return cell
@@ -106,7 +106,7 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    internal func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch section {
             
@@ -121,19 +121,19 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
-    internal func numberOfSections(in collectionView: UICollectionView) -> Int {
+    internal func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         
         return 2
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    internal func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         
         switch section {
             
         case 0:
-            return UIEdgeInsets.zero
+            return UIEdgeInsetsZero
             
         case 1:
             return UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
@@ -143,17 +143,17 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    internal func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         
         return 10.0
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    internal func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         
         return 10.0
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    internal func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         switch indexPath.section {
             
@@ -166,8 +166,8 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         case 1:
             let numberOfItemsInLine: CGFloat = 3
             
-            let inset = self.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAt: indexPath.section)
-            let minimumInteritemSpacing = self.collectionView(collectionView, layout: collectionViewLayout, minimumInteritemSpacingForSectionAt: indexPath.section)
+            let inset = self.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: indexPath.section)
+            let minimumInteritemSpacing = self.collectionView(collectionView, layout: collectionViewLayout, minimumLineSpacingForSectionAtIndex: indexPath.section)
             
             let itemWidth = (collectionView.frame.width - inset.left - inset.right - minimumInteritemSpacing * (numberOfItemsInLine - 1)) / numberOfItemsInLine
             let itemHeight = itemWidth
@@ -181,20 +181,20 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
     
     // MARK: - UIScrollViewDelegate
     
-    internal func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    internal func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         
         guard scrollView === self.collectionView else {
             
             return
         }
         
-        let indexPath = IndexPath(item: 0, section: 0)
-        guard let cell = self.collectionView.cellForItem(at: indexPath) as? SearchCollectionViewCell else {
+        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+        guard let cell = self.collectionView.cellForItemAtIndexPath(indexPath) as? SearchCollectionViewCell else {
             
             return
         }
         
-        guard cell.searchBar.isFirstResponder else {
+        guard cell.searchBar.isFirstResponder() else {
             
             return
         }
@@ -204,7 +204,7 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
     
     // MARK: - UISearchBarDelegate
     
-    internal func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    internal func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
         let oldFilteredNames = self.filteredNames!
         
@@ -222,21 +222,21 @@ internal final class ViewController: UIViewController, UICollectionViewDataSourc
         
         self.collectionView.performBatchUpdates({
             
-            for (oldIndex, oldName) in oldFilteredNames.enumerated() {
+            for (oldIndex, oldName) in oldFilteredNames.enumerate() {
                 
                 if self.filteredNames.contains(oldName) == false {
                     
-                    let indexPath = IndexPath(item: oldIndex, section: 1)
-                    self.collectionView.deleteItems(at: [indexPath])
+                    let indexPath = NSIndexPath(forItem: oldIndex, inSection: 1)
+                    self.collectionView.deleteItemsAtIndexPaths([indexPath])
                 }
             }
             
-            for (index, name) in self.filteredNames.enumerated() {
+            for (index, name) in self.filteredNames.enumerate() {
                 
                 if oldFilteredNames.contains(name) == false {
                     
-                    let indexPath = IndexPath(item: index, section: 1)
-                    self.collectionView.insertItems(at: [indexPath])
+                    let indexPath = NSIndexPath(forItem: index, inSection: 1)
+                    self.collectionView.insertItemsAtIndexPaths([indexPath])
                 }
             }
             

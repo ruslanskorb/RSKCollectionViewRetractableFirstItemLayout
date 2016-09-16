@@ -17,25 +17,25 @@
 import UIKit
 
 /// A light-weight `UICollectionViewFlowLayout` subclass that allows the first item to be retractable.
-open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayout {
+public class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayout {
     
     // MARK: - Private Properties
     
-    fileprivate let firstItemIndexPath = IndexPath(item: 0, section: 0)
+    private let firstItemIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
-    fileprivate var lastKnownTargetContentOffset: CGPoint?
+    private var lastKnownTargetContentOffset: CGPoint?
     
     // MARK: - Public Properties
     
     /// The inset of the first item's retractable area within the first item's content area. Default value is `UIEdgeInsetsZero`.
-    open var firstItemRetractableAreaInset = UIEdgeInsets.zero
+    public var firstItemRetractableAreaInset = UIEdgeInsetsZero
     
     /// A Boolean value that determines whether the retractability of the first item is enabled. Default value is `true`.
-    open var isEnabledRetractabilityOfFirstItem = true
+    public var isEnabledRetractabilityOfFirstItem = true
     
     // MARK: - Superclass Properties
     
-    open override var scrollDirection: UICollectionViewScrollDirection {
+    public override var scrollDirection: UICollectionViewScrollDirection {
         
         didSet {
             
@@ -48,45 +48,45 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
     
     // MARK: - Superclass Methods
     
-    open override var collectionViewContentSize: CGSize {
+    public override func collectionViewContentSize() -> CGSize {
         
         guard self.isEnabledRetractabilityOfFirstItem else {
             
-            return super.collectionViewContentSize
+            return super.collectionViewContentSize()
         }
         
-        guard let collectionView = self.collectionView, let _ = collectionView.delegate as? UICollectionViewDelegateFlowLayout, let firstItemLayoutAttributes = self.layoutAttributesForItem(at: self.firstItemIndexPath) else {
+        guard let collectionView = self.collectionView, _ = collectionView.delegate as? UICollectionViewDelegateFlowLayout, firstItemLayoutAttributes = self.layoutAttributesForItemAtIndexPath(self.firstItemIndexPath) else {
             
-            return super.collectionViewContentSize
+            return super.collectionViewContentSize()
         }
         
-        var collectionViewContentSize = super.collectionViewContentSize
+        var collectionViewContentSize = super.collectionViewContentSize()
         
         switch self.scrollDirection {
             
-        case .vertical:
+        case .Vertical:
             collectionViewContentSize.height = max(collectionViewContentSize.height, collectionView.frame.height) + firstItemLayoutAttributes.frame.height
             return collectionViewContentSize
             
-        case .horizontal:
+        case .Horizontal:
             collectionViewContentSize.width = max(collectionViewContentSize.width, collectionView.frame.width) + firstItemLayoutAttributes.frame.width
             return collectionViewContentSize
         }
     }
     
-    open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+    public override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         
         guard self.isEnabledRetractabilityOfFirstItem else {
             
-            let targetContentOffset = super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+            let targetContentOffset = super.targetContentOffsetForProposedContentOffset(proposedContentOffset, withScrollingVelocity: velocity)
             self.lastKnownTargetContentOffset = targetContentOffset
             
             return targetContentOffset
         }
         
-        guard let _ = self.collectionView?.delegate as? UICollectionViewDelegateFlowLayout, let firstItemLayoutAttributes = self.layoutAttributesForItem(at: self.firstItemIndexPath) else {
+        guard let _ = self.collectionView?.delegate as? UICollectionViewDelegateFlowLayout, firstItemLayoutAttributes = self.layoutAttributesForItemAtIndexPath(self.firstItemIndexPath) else {
             
-            let targetContentOffset = super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+            let targetContentOffset = super.targetContentOffsetForProposedContentOffset(proposedContentOffset, withScrollingVelocity: velocity)
             self.lastKnownTargetContentOffset = targetContentOffset
             
             return targetContentOffset
@@ -105,7 +105,7 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
         
         switch self.scrollDirection {
             
-        case .vertical:
+        case .Vertical:
             lastKnownTargetContentOffsetY = self.lastKnownTargetContentOffset?.y
             proposedContentOffsetX = proposedContentOffset.x
             proposedContentOffsetY = proposedContentOffset.y
@@ -115,7 +115,7 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
             firstItemFrameMidY = firstItemFrame.midY
             firstItemFrameMaxY = firstItemFrame.maxY
             
-        case .horizontal:
+        case .Horizontal:
             lastKnownTargetContentOffsetY = self.lastKnownTargetContentOffset?.x
             proposedContentOffsetX = proposedContentOffset.y
             proposedContentOffsetY = proposedContentOffset.x
@@ -128,7 +128,7 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
         
         guard proposedContentOffsetY > firstItemFrameMinY && proposedContentOffsetY < firstItemFrameMaxY else {
             
-            let targetContentOffset = super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+            let targetContentOffset = super.targetContentOffsetForProposedContentOffset(proposedContentOffset, withScrollingVelocity: velocity)
             self.lastKnownTargetContentOffset = targetContentOffset
             
             return targetContentOffset
@@ -185,7 +185,7 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
         
         switch self.scrollDirection {
             
-        case .horizontal:
+        case .Horizontal:
             targetContentOffset = CGPoint(x: targetContentOffset.y, y: targetContentOffset.x)
             
         default:
