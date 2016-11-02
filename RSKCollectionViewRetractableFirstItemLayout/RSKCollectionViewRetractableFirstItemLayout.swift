@@ -65,11 +65,11 @@ public class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLa
         switch self.scrollDirection {
             
         case .Vertical:
-            collectionViewContentSize.height = max(collectionViewContentSize.height, collectionView.frame.height) + firstItemLayoutAttributes.frame.height
+            collectionViewContentSize.height = max(collectionViewContentSize.height, collectionView.frame.height + firstItemLayoutAttributes.frame.height)
             return collectionViewContentSize
             
         case .Horizontal:
-            collectionViewContentSize.width = max(collectionViewContentSize.width, collectionView.frame.width) + firstItemLayoutAttributes.frame.width
+            collectionViewContentSize.width = max(collectionViewContentSize.width, collectionView.frame.width + firstItemLayoutAttributes.frame.width)
             return collectionViewContentSize
         }
     }
