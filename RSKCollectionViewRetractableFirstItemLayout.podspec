@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RSKCollectionViewRetractableFirstItemLayout'
-  s.version      = '1.0.1'
+  s.version      = '2.0.0'
   s.summary      = 'A light-weight UICollectionViewFlowLayout subclass that allows the first item to be retractable.'
   s.homepage     = 'https://github.com/ruslanskorb/RSKCollectionViewRetractableFirstItemLayout'
   s.license      = { :type => 'Apache', :file => 'LICENSE' }
