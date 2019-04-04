@@ -7,6 +7,7 @@ Pod::Spec.new do |s|
   s.authors      = { 'Ruslan Skorb' => 'ruslan.skorb@gmail.com' }
   s.source       = { :git => 'https://github.com/ruslanskorb/RSKCollectionViewRetractableFirstItemLayout.git', :tag => s.version.to_s }
   s.platform     = :ios, '8.0'
+  s.swift_version = '5.0'
   s.source_files = 'RSKCollectionViewRetractableFirstItemLayout/*.{swift}'
   s.framework    = 'UIKit'
   s.requires_arc = true
