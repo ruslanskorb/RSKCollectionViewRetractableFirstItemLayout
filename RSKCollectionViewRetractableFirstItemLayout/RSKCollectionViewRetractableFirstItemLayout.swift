@@ -35,7 +35,7 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
     
     // MARK: - Superclass Properties
     
-    open override var scrollDirection: UICollectionViewScrollDirection {
+    open override var scrollDirection: UICollectionView.ScrollDirection {
         
         didSet {
             
@@ -64,12 +64,15 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
         
         switch self.scrollDirection {
             
-        case .vertical:
-            collectionViewContentSize.height = max(collectionViewContentSize.height, collectionView.frame.height + firstItemLayoutAttributes.frame.height)
-            return collectionViewContentSize
-            
         case .horizontal:
             collectionViewContentSize.width = max(collectionViewContentSize.width, collectionView.frame.width + firstItemLayoutAttributes.frame.width)
+            return collectionViewContentSize
+            
+        case .vertical:
+            fallthrough
+            
+        @unknown default:
+            collectionViewContentSize.height = max(collectionViewContentSize.height, collectionView.frame.height + firstItemLayoutAttributes.frame.height)
             return collectionViewContentSize
         }
     }
@@ -105,16 +108,6 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
         
         switch self.scrollDirection {
             
-        case .vertical:
-            lastKnownTargetContentOffsetY = self.lastKnownTargetContentOffset?.y
-            proposedContentOffsetX = proposedContentOffset.x
-            proposedContentOffsetY = proposedContentOffset.y
-            firstItemRetractableAreaInsetTop = self.firstItemRetractableAreaInset.top
-            firstItemRetractableAreaInsetBottom = self.firstItemRetractableAreaInset.bottom
-            firstItemFrameMinY = firstItemFrame.minY
-            firstItemFrameMidY = firstItemFrame.midY
-            firstItemFrameMaxY = firstItemFrame.maxY
-            
         case .horizontal:
             lastKnownTargetContentOffsetY = self.lastKnownTargetContentOffset?.x
             proposedContentOffsetX = proposedContentOffset.y
@@ -124,6 +117,19 @@ open class RSKCollectionViewRetractableFirstItemLayout: UICollectionViewFlowLayo
             firstItemFrameMinY = firstItemFrame.minX
             firstItemFrameMidY = firstItemFrame.midX
             firstItemFrameMaxY = firstItemFrame.maxX
+            
+        case .vertical:
+            fallthrough
+            
+        @unknown default:
+            lastKnownTargetContentOffsetY = self.lastKnownTargetContentOffset?.y
+            proposedContentOffsetX = proposedContentOffset.x
+            proposedContentOffsetY = proposedContentOffset.y
+            firstItemRetractableAreaInsetTop = self.firstItemRetractableAreaInset.top
+            firstItemRetractableAreaInsetBottom = self.firstItemRetractableAreaInset.bottom
+            firstItemFrameMinY = firstItemFrame.minY
+            firstItemFrameMidY = firstItemFrame.midY
+            firstItemFrameMaxY = firstItemFrame.maxY
         }
         
         guard proposedContentOffsetY > firstItemFrameMinY && proposedContentOffsetY < firstItemFrameMaxY else {
